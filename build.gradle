@@ -1,0 +1,18 @@
+group 'com.sharomank.progress'
+version '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
