@@ -1,0 +1,120 @@
+Simple commands for manual testing via https://github.com/jakubroztocil/httpie tool
+
+1) INSERT NEW NOTE:
+$ http -f POST localhost:8080/notes \
+    title='Test note' \
+    description='Some information'
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json;charset=UTF-8
+        Date: Tue, 30 Jun 2015 20:45:23 GMT
+        Server: Apache-Coyote/1.1
+        Transfer-Encoding: chunked
+        X-Application-Context: application
+        {
+            "colorHex": null,
+            "completed": null,
+            "created": 1435697123291,
+            "deleted": null,
+            "description": "Some information",
+            "id": "5592ffe3c9f2de1f44ec04ef",
+            "tags": null,
+            "title": "Test note"
+        }
+
+2) GET NOTE:
+$ http GET localhost:8080/notes/5592ffe3c9f2de1f44ec04ef
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json;charset=UTF-8
+        Date: Tue, 30 Jun 2015 20:46:44 GMT
+        Server: Apache-Coyote/1.1
+        Transfer-Encoding: chunked
+        X-Application-Context: application
+        {
+            "colorHex": null,
+            "completed": null,
+            "created": 1435697123291,
+            "deleted": null,
+            "description": "Some information",
+            "id": "5592ffe3c9f2de1f44ec04ef",
+            "tags": null,
+            "title": "Test note"
+        }
+
+3) PARTIAL UPDATE NOTE #1:
+$ http PATCH localhost:8080/notes/5592ffe3c9f2de1f44ec04ef \
+    title='Test note v2'
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json;charset=UTF-8
+        Date: Tue, 30 Jun 2015 20:47:46 GMT
+        Server: Apache-Coyote/1.1
+        Transfer-Encoding: chunked
+        X-Application-Context: application
+        {
+            "colorHex": null,
+            "completed": null,
+            "created": 1435697123291,
+            "deleted": null,
+            "description": "Some information",
+            "id": "5592ffe3c9f2de1f44ec04ef",
+            "tags": null,
+            "title": "Test note v2"
+        }
+
+
+4) PARTIAL UPDATE NOTE #2:
+$ http PATCH localhost:8080/notes/5592ffe3c9f2de1f44ec04ef \
+    description='Some information v2'
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json;charset=UTF-8
+        Date: Tue, 30 Jun 2015 20:49:19 GMT
+        Server: Apache-Coyote/1.1
+        Transfer-Encoding: chunked
+        X-Application-Context: application
+        {
+            "colorHex": null,
+            "completed": null,
+            "created": 1435697123291,
+            "deleted": null,
+            "description": "Some information v2",
+            "id": "5592ffe3c9f2de1f44ec04ef",
+            "tags": null,
+            "title": "Test note v2"
+        }
+
+
+5) FULL UPDATE NOTE:
+$ http PUT localhost:8080/notes/5592ffe3c9f2de1f44ec04ef \
+    id=5592ffe3c9f2de1f44ec04ef \
+    created:=1435697123291 \
+    title='Test note v3' \
+    description='Some information v3'
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json;charset=UTF-8
+        Date: Tue, 30 Jun 2015 20:50:25 GMT
+        Server: Apache-Coyote/1.1
+        Transfer-Encoding: chunked
+        X-Application-Context: application
+        {
+            "colorHex": null,
+            "completed": null,
+            "created": 1435697123291,
+            "deleted": null,
+            "description": "Some information v3",
+            "id": "5592ffe3c9f2de1f44ec04ef",
+            "tags": null,
+            "title": "Test note v3"
+        }
+
+6) DELETE NOTE:
+http DELETE localhost:8080/notes/5592ffe3c9f2de1f44ec04ef
+
+        HTTP/1.1 200 OK
+        Content-Length: 0
+        Date: Tue, 30 Jun 2015 20:51:22 GMT
+        Server: Apache-Coyote/1.1
+        X-Application-Context: application

@@ -12,9 +12,9 @@ public class Note {
     private String id;
     private String title;
     private String description;
-    private NoteState state;
     private Date created;
-    private Date deadline;
+    private Date completed;
+    private Date deleted;
     private String colorHex;
     private Set<String> tags;
 
@@ -42,14 +42,6 @@ public class Note {
         this.description = description;
     }
 
-    public NoteState getState() {
-        return state;
-    }
-
-    public void setState(NoteState state) {
-        this.state = state;
-    }
-
     public Date getCreated() {
         return created;
     }
@@ -58,12 +50,20 @@ public class Note {
         this.created = created;
     }
 
-    public Date getDeadline() {
-        return deadline;
+    public Date getCompleted() {
+        return completed;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setCompleted(Date completed) {
+        this.completed = completed;
+    }
+
+    public Date getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Date deleted) {
+        this.deleted = deleted;
     }
 
     public String getColorHex() {
