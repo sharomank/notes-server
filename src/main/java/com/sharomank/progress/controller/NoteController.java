@@ -2,47 +2,30 @@ package com.sharomank.progress.controller;
 
 import com.sharomank.progress.model.Note;
 import com.sharomank.progress.repository.NoteRepository;
-import com.sharomank.progress.util.JavaBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/notes")
-public class NoteController {
-    @Autowired
+@RequestMapping(NoteController.URI_PATH)
+public class NoteController extends AbstractController<Note> {
+    public static final String URI_PATH = "/notes";
+
     private NoteRepository repository;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Note> getNotes() {
-        return repository.findAll();
+    @Autowired
+    public NoteController(NoteRepository repository) {
+        this.repository = repository;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Note getNote(@PathVariable String id) {
-        return repository.findOne(id);
+    @Override
+    protected MongoRepository<Note, String> getRepository() {
+        return repository;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Note createNote(Note note) {
-        note.setCreated(new Date());
-        return repository.insert(note);
-    }
-
-    @RequestMapping(value = "/{id}", method = {RequestMethod.PATCH, RequestMethod.PUT})
-    public Note updateNote(@PathVariable String id,
-                           @RequestBody Note updateNote) {
-        Note currentNote = repository.findOne(id);
-        Assert.notNull(currentNote);
-        JavaBeanUtils.copyNotNullProperties(updateNote, currentNote);
-        return repository.save(currentNote);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteNote(@PathVariable String id) {
-        repository.delete(id);
+    @Override
+    protected String getUriPath() {
+        return URI_PATH;
     }
 }
