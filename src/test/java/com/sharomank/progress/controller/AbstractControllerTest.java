@@ -54,7 +54,7 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     protected abstract String getUriPath();
 
     private String getItemUriPath() {
-        return getUriPath() + Constant.SLASH + Constant.PATH_VARIABLE_ID;
+        return getUriPath() + Constant.PATH_VARIABLE_ID;
     }
 
     @Test
