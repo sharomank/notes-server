@@ -1,6 +1,7 @@
 package com.sharomank.progress.controller;
 
 import com.sharomank.progress.model.BaseModel;
+import com.sharomank.progress.util.Constant;
 import com.sharomank.progress.util.JavaBeanUtils;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
@@ -11,19 +12,24 @@ import java.net.URI;
 import java.time.LocalDateTime;
 
 public abstract class AbstractController<E extends BaseModel> {
-    private static final String ID_PATH_VAR = "/{id}";
-    private static final String SLASH = "/";
+    private final MongoRepository<E, String> repository;
+
+    public AbstractController(MongoRepository<E, String> repository) {
+        this.repository = repository;
+    }
 
     protected abstract String getUriPath();
 
-    protected abstract MongoRepository<E, String> getRepository();
+    protected MongoRepository<E, String> getRepository() {
+        return repository;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<E>> list() {
         return ResponseEntity.ok(getRepository().findAll());
     }
 
-    @RequestMapping(value = ID_PATH_VAR, method = RequestMethod.GET)
+    @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.GET)
     public ResponseEntity<E> get(@PathVariable String id) {
         E result = getRepository().findOne(id);
         if (result == null) {
@@ -37,10 +43,10 @@ public abstract class AbstractController<E extends BaseModel> {
     public ResponseEntity<E> create(E item) {
         item.setCreated(LocalDateTime.now());
         item = getRepository().insert(item);
-        return ResponseEntity.created(URI.create(getUriPath() + SLASH + item.getId())).body(item);
+        return ResponseEntity.created(URI.create(getUriPath() + Constant.SLASH + item.getId())).body(item);
     }
 
-    @RequestMapping(value = ID_PATH_VAR, method = RequestMethod.PUT)
+    @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.PUT)
     public ResponseEntity<E> update(@PathVariable String id, @RequestBody E updateItem) {
         E current = getRepository().findOne(id);
         if (current == null) {
@@ -50,14 +56,15 @@ public abstract class AbstractController<E extends BaseModel> {
         return ResponseEntity.ok().body(getRepository().save(current));
     }
 
-    @RequestMapping(value = ID_PATH_VAR, method = RequestMethod.DELETE)
+    @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         boolean exists = getRepository().exists(id);
         if (!exists) {
-            ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         getRepository().delete(id);
+        return ResponseEntity.ok().build();
     }
 }
 

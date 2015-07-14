@@ -1,10 +1,11 @@
 package com.sharomank.progress.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharomank.progress.ProgressApplication;
 import com.sharomank.progress.model.BaseModel;
+import com.sharomank.progress.util.Constant;
+import com.sharomank.progress.util.MockMvcUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,15 +19,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,25 +39,22 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     @Autowired
     protected ObjectMapper objectMapper;
     protected MockMvc mockMvc;
+    protected MockMvcUtil mockMvcUtil;
     protected List<T> testItems = new ArrayList<>();
     @Autowired
     private WebApplicationContext webAppContext;
 
-    public static byte[] json(Object object) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        return mapper.writeValueAsBytes(object);
-    }
 
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(this.webAppContext).build();
+        mockMvcUtil = new MockMvcUtil(mockMvc, APPLICATION_JSON_UTF8);
     }
 
-    protected abstract String getResourcesUriPath();
+    protected abstract String getUriPath();
 
-    private String getItemUriPath(String id) {
-        return getResourcesUriPath() + "/" + id;
+    private String getItemUriPath() {
+        return getUriPath() + Constant.SLASH + Constant.PATH_VARIABLE_ID;
     }
 
     @Test
@@ -67,18 +62,13 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
         T testItem = getTestItem();
         testItem.setId(null);
         testItem.setCreated(null);
-        mockMvc.perform(
-                post(getResourcesUriPath())
-                        .content(json(testItem))
-                        .accept(APPLICATION_JSON_UTF8))
+        mockMvcUtil.doPost(testItem, getUriPath())
                 .andExpect(status().isCreated());
     }
 
     @Test
     public void getItems() throws Exception {
-        mockMvc.perform(
-                get(getResourcesUriPath())
-                        .accept(APPLICATION_JSON_UTF8))
+        mockMvcUtil.doGet(getUriPath())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$[0].id").exists())
@@ -88,16 +78,14 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
 
     @Test
     public void getItem() throws Exception {
-        String content = mockMvc.perform(
-                get(getResourcesUriPath())
-                        .accept(APPLICATION_JSON_UTF8))
+        String content = mockMvcUtil.doGet(getUriPath())
                 .andReturn().getResponse().getContentAsString();
 
         JavaType resultType = objectMapper.getTypeFactory().constructCollectionType(List.class, getTestItem().getClass());
         List<T> items = objectMapper.readValue(content, resultType);
         items.stream().forEach(item -> {
             try {
-                mockMvc.perform(get(getItemUriPath(item.getId())).accept(APPLICATION_JSON_UTF8))
+                mockMvcUtil.doGet(getItemUriPath(), item.getId())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(item.getId())));
             } catch (Exception e) {
@@ -107,36 +95,46 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     }
 
     @Test
-    public void itemNotFound() throws Exception {
-        mockMvc.perform(
-                get(getItemUriPath(UUID.randomUUID().toString()))
-                        .accept(APPLICATION_JSON_UTF8))
+    public void getItemNotFound() throws Exception {
+        mockMvcUtil.doGet(getItemUriPath(), getRandomId())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void updateItem() throws Exception {
         T updateItem = getTestItem();
-        updateItem.setName(updateItem.getName() + " - UPDATED");
-        mockMvc.perform(
-                put(getItemUriPath(updateItem.getId()))
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(json(updateItem)))
-                .andDo(print())
+        updateItem.setName(updateItem.getName() + updateItem.toString());
+        mockMvcUtil.doPut(updateItem, getItemUriPath(), updateItem.getId())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(updateItem.getId())))
                 .andExpect(jsonPath("$.name", is(updateItem.getName())));
     }
 
     @Test
+    public void updateNotFound() throws Exception {
+        T updateItem = getTestItem();
+        updateItem.setName(updateItem.getName() + updateItem.toString());
+        mockMvcUtil.doPut(updateItem, getItemUriPath(), getRandomId())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void deleteItem() throws Exception {
-        mockMvc.perform(
-                delete(getItemUriPath(getTestItem().getId()))
-                        .accept(APPLICATION_JSON_UTF8))
+        mockMvcUtil.doDelete(getItemUriPath(), getTestItem().getId())
                 .andExpect(status().isOk());
     }
 
-    private T getTestItem() {
+    @Test
+    public void deleteItemNotFound() throws Exception {
+        mockMvcUtil.doDelete(getItemUriPath(), getRandomId())
+                .andExpect(status().isNotFound());
+    }
+
+    protected String getRandomId() {
+        return UUID.randomUUID().toString();
+    }
+
+    protected T getTestItem() {
         Assert.isTrue(testItems.size() > 0, "You should insert test data via repository and after that add them to 'testItems' variable.");
         return testItems.get(0);
     }

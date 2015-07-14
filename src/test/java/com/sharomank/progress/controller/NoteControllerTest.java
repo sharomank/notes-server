@@ -33,7 +33,7 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
     }
 
     @Override
-    protected String getResourcesUriPath() {
+    protected String getUriPath() {
         return NoteController.URI_PATH;
     }
 }
