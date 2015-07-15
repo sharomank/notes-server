@@ -27,24 +27,32 @@ public class MockMvcUtil {
     }
 
     public ResultActions doPost(Object obj, String uriTemplate, Object... args) throws Exception {
-        return mockMvc.perform(post(uriTemplate, args).content(json(obj)).accept(mediaType))
+        return mockMvc.perform(
+                post(uriTemplate, args)
+                        .contentType(mediaType)
+                        .content(json(obj))
+                        .accept(mediaType))
                 .andDo(print());
     }
 
     public ResultActions doPut(Object obj, String uriTemplate, Object... args) throws Exception {
-        return mockMvc.perform(put(uriTemplate, args)
-                .contentType(mediaType)
-                .content(json(obj)))
+        return mockMvc.perform(
+                put(uriTemplate, args)
+                        .contentType(mediaType)
+                        .content(json(obj))
+                        .accept(mediaType))
                 .andDo(print());
     }
 
     public ResultActions doGet(String uriTemplate, Object... args) throws Exception {
-        return mockMvc.perform(get(uriTemplate, args).accept(mediaType))
+        return mockMvc.perform(
+                get(uriTemplate, args).accept(mediaType))
                 .andDo(print());
     }
 
     public ResultActions doDelete(String template, Object... args) throws Exception {
-        return mockMvc.perform(delete(template, args).accept(mediaType))
+        return mockMvc.perform(
+                delete(template, args).accept(mediaType))
                 .andDo(print());
     }
 }

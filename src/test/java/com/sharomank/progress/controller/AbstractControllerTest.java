@@ -112,9 +112,7 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
 
     @Test
     public void updateNotFound() throws Exception {
-        T updateItem = getTestItem();
-        updateItem.setName(updateItem.getName() + updateItem.toString());
-        mockMvcUtil.doPut(updateItem, getItemUriPath(), getRandomId())
+        mockMvcUtil.doPut(getTestItem(), getItemUriPath(), getRandomId())
                 .andExpect(status().isNotFound());
     }
 
