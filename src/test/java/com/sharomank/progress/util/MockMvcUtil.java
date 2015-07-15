@@ -1,6 +1,5 @@
 package com.sharomank.progress.util;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,16 +12,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 public class MockMvcUtil {
     private final MockMvc mockMvc;
+    private final ObjectMapper mapper;
     private final MediaType mediaType;
 
-    public MockMvcUtil(MockMvc mockMvc, MediaType mediaType) {
+    public MockMvcUtil(MockMvc mockMvc, MediaType mediaType, ObjectMapper objectMapper) {
         this.mockMvc = mockMvc;
         this.mediaType = mediaType;
+        this.mapper = objectMapper;
     }
 
-    public static byte[] json(Object object) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    public byte[] json(Object object) throws IOException {
         return mapper.writeValueAsBytes(object);
     }
 

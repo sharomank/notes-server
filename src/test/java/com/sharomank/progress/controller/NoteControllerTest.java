@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
             Note note = new Note();
             note.setName(testName);
             note.setDescription(MessageFormat.format("Description for ''{0}''", testName));
+            note.setCreated(LocalDateTime.now());
             testItems.add(noteRepository.insert(note));
         });
     }
@@ -35,5 +37,10 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
     @Override
     protected String getUriPath() {
         return NoteController.URI_PATH;
+    }
+
+    @Override
+    protected Note getTestItemForInsert() {
+        return new Note("NEW NOTE", "SOME INFO", LocalDateTime.now(), null, null);
     }
 }

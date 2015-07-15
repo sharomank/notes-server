@@ -44,14 +44,15 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     @Autowired
     private WebApplicationContext webAppContext;
 
-
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(this.webAppContext).build();
-        mockMvcUtil = new MockMvcUtil(mockMvc, APPLICATION_JSON_UTF8);
+        mockMvcUtil = new MockMvcUtil(mockMvc, APPLICATION_JSON_UTF8, objectMapper);
     }
 
     protected abstract String getUriPath();
+
+    protected abstract T getTestItemForInsert();
 
     private String getItemUriPath() {
         return getUriPath() + Constant.PATH_VARIABLE_ID;
@@ -59,9 +60,7 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
 
     @Test
     public void createItem() throws Exception {
-        T testItem = getTestItem();
-        testItem.setId(null);
-        testItem.setCreated(null);
+        T testItem = getTestItemForInsert();
         mockMvcUtil.doPost(testItem, getUriPath())
                 .andExpect(status().isCreated());
     }
