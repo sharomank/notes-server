@@ -1,6 +1,5 @@
 # Specific folders
 .*
-gradle
 build
 
 # Specific files
