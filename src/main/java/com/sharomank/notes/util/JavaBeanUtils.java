@@ -1,4 +1,4 @@
-package com.sharomank.progress.util;
+package com.sharomank.notes.util;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

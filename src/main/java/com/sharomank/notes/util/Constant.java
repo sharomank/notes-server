@@ -1,4 +1,4 @@
-package com.sharomank.progress.util;
+package com.sharomank.notes.util;
 
 public final class Constant {
     public static final String SLASH = "/";

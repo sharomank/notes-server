@@ -1,4 +1,4 @@
-package com.sharomank.progress.converter;
+package com.sharomank.notes.converter;
 
 import org.springframework.core.convert.converter.Converter;
 

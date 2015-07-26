@@ -1,4 +1,4 @@
-package com.sharomank.progress.model;
+package com.sharomank.notes.model;
 
 import java.time.LocalDateTime;
 

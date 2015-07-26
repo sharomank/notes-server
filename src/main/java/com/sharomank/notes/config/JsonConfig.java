@@ -1,4 +1,4 @@
-package com.sharomank.progress.config;
+package com.sharomank.notes.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.SerializationFeature;

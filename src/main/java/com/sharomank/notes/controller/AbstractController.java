@@ -1,8 +1,8 @@
-package com.sharomank.progress.controller;
+package com.sharomank.notes.controller;
 
-import com.sharomank.progress.model.BaseModel;
-import com.sharomank.progress.util.Constant;
-import com.sharomank.progress.util.JavaBeanUtils;
+import com.sharomank.notes.model.BaseModel;
+import com.sharomank.notes.util.Constant;
+import com.sharomank.notes.util.JavaBeanUtils;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

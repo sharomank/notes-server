@@ -1,11 +1,11 @@
-package com.sharomank.progress;
+package com.sharomank.notes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProgressApplication {
+public class NotesApplication {
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(ProgressApplication.class, args);
+        SpringApplication.run(NotesApplication.class, args);
     }
 }

@@ -1,11 +1,11 @@
-package com.sharomank.progress.config;
+package com.sharomank.notes.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.sharomank.progress.converter.LocalDateTimeToStringConverter;
-import com.sharomank.progress.converter.LocalDateToStringConverter;
-import com.sharomank.progress.converter.StringToLocalDateConverter;
-import com.sharomank.progress.converter.StringToLocalDateTimeConverter;
+import com.sharomank.notes.converter.LocalDateTimeToStringConverter;
+import com.sharomank.notes.converter.LocalDateToStringConverter;
+import com.sharomank.notes.converter.StringToLocalDateConverter;
+import com.sharomank.notes.converter.StringToLocalDateTimeConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import java.util.Arrays;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.sharomank.progress.repository")
+@EnableMongoRepositories(basePackages = "com.sharomank.notes.repository")
 @PropertySource("classpath:db.properties")
 public class MongoDbConfig extends AbstractMongoConfiguration {
     @Value("${mongodb.host}")

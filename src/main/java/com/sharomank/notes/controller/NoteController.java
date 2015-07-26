@@ -1,7 +1,7 @@
-package com.sharomank.progress.controller;
+package com.sharomank.notes.controller;
 
-import com.sharomank.progress.model.Note;
-import com.sharomank.progress.repository.NoteRepository;
+import com.sharomank.notes.model.Note;
+import com.sharomank.notes.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

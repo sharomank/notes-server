@@ -1,4 +1,4 @@
-package com.sharomank.progress.util;
+package com.sharomank.notes.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

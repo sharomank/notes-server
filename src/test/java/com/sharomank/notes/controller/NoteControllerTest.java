@@ -1,7 +1,8 @@
-package com.sharomank.progress.controller;
+package com.sharomank.notes.controller;
 
-import com.sharomank.progress.model.Note;
-import com.sharomank.progress.repository.NoteRepository;
+import com.sharomank.notes.model.Note;
+import com.sharomank.notes.repository.NoteRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,8 +24,6 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
     public void setUp() throws Exception {
         super.setUp();
 
-        noteRepository.deleteAll();
-
         TEST_NOTES.stream().forEach(testName -> {
             Note note = new Note();
             note.setName(testName);
@@ -32,6 +31,11 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
             note.setCreated(LocalDateTime.now());
             testItems.add(noteRepository.insert(note));
         });
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        testItems.stream().forEach(noteRepository::delete);
     }
 
     @Override

@@ -1,11 +1,11 @@
-package com.sharomank.progress.controller;
+package com.sharomank.notes.controller;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sharomank.progress.ProgressApplication;
-import com.sharomank.progress.model.BaseModel;
-import com.sharomank.progress.util.Constant;
-import com.sharomank.progress.util.MockMvcUtil;
+import com.sharomank.notes.NotesApplication;
+import com.sharomank.notes.model.BaseModel;
+import com.sharomank.notes.util.Constant;
+import com.sharomank.notes.util.MockMvcUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,19 +28,20 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ProgressApplication.class)
+@SpringApplicationConfiguration(classes = NotesApplication.class)
 @WebAppConfiguration
 public abstract class AbstractControllerTest<T extends BaseModel> {
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+            StandardCharsets.UTF_8);
 
-    @Autowired
-    protected ObjectMapper objectMapper;
     protected MockMvc mockMvc;
     protected MockMvcUtil mockMvcUtil;
     protected List<T> testItems = new ArrayList<>();
+
+    @Autowired
+    protected ObjectMapper objectMapper;
     @Autowired
     private WebApplicationContext webAppContext;
 
