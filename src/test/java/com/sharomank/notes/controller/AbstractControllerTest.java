@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
@@ -62,8 +63,11 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     @Test
     public void createItem() throws Exception {
         T testItem = getTestItemForInsert();
-        mockMvcUtil.doPost(testItem, getUriPath())
+        ResultActions result = mockMvcUtil.doPost(testItem, getUriPath())
                 .andExpect(status().isCreated());
+
+        JavaType resultType = objectMapper.getTypeFactory().constructType(getTestItem().getClass());
+        testItems.add(mockMvcUtil.getResponseObject(result, resultType));
     }
 
     @Test
@@ -78,11 +82,9 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
 
     @Test
     public void getItem() throws Exception {
-        String content = mockMvcUtil.doGet(getUriPath())
-                .andReturn().getResponse().getContentAsString();
-
+        ResultActions result = mockMvcUtil.doGet(getUriPath());
         JavaType resultType = objectMapper.getTypeFactory().constructCollectionType(List.class, getTestItem().getClass());
-        List<T> items = objectMapper.readValue(content, resultType);
+        List<T> items = mockMvcUtil.getResponseObject(result, resultType);
         items.stream().forEach(item -> {
             try {
                 mockMvcUtil.doGet(getItemUriPath(), item.getId())
