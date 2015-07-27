@@ -24,13 +24,11 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
     public void setUp() throws Exception {
         super.setUp();
 
-        TEST_NOTES.stream().forEach(testName -> {
-            Note note = new Note();
-            note.setName(testName);
-            note.setDescription(MessageFormat.format("Description for ''{0}''", testName));
-            note.setCreated(LocalDateTime.now());
-            testItems.add(noteRepository.insert(note));
-        });
+        TEST_NOTES.stream()
+                .map(this::createNote)
+                .map(noteRepository::insert)
+                .map(testItems::add)
+                .count();
     }
 
     @After
@@ -45,6 +43,14 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
 
     @Override
     protected Note getTestItemForInsert() {
-        return new Note("NEW NOTE", "SOME INFO", LocalDateTime.now(), null, null);
+        return createNote("NEW NOTE");
+    }
+
+    private Note createNote(String noteName) {
+        Note note = new Note();
+        note.setName(noteName);
+        note.setDescription(MessageFormat.format("Description for ''{0}''", noteName));
+        note.setCreated(LocalDateTime.now());
+        return note;
     }
 }
