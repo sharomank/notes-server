@@ -1,5 +1,7 @@
-# Notes
-Simple server with rest api for notes.
+# Notes Server
+[![Build Status](https://travis-ci.org/sharomank/notes-server.svg)](https://travis-ci.org/sharomank/notes-server)
+
+Simple server app with REST API for notes.
 
 ## Prerequirements
 * Java 8
