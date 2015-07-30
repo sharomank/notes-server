@@ -4,11 +4,13 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+        classpath("com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.8.0")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+apply plugin: 'mongo'
 
 jar {
     baseName = 'notes-server'
@@ -35,3 +37,5 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
 }
+
+test.dependsOn startManagedMongoDb
