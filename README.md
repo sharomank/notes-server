@@ -1,5 +1,9 @@
 # Notes Server
 [![Build Status](https://travis-ci.org/sharomank/notes-server.svg)](https://travis-ci.org/sharomank/notes-server)
+<a href="https://scan.coverity.com/projects/5985">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/5985/badge.svg"/>
+</a>
 
 Simple server app with REST API for notes.
 
