@@ -1,3 +1,19 @@
 language: java
 sudo: false
 jdk: oraclejdk8
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "lCWdwU/EunkO1iP8MkPEbWqIpYvblXEjEMzfO+Vq6nCZz6p2UxK9QJZKLQoa8RBK4PPCyUSuNxzaBvrjLmkLi1wFHBs+VFQ5e4+Jzz3cvWHH8tYVEtZuSzM8DMqlkEttI4A3zyQhZPjHnN5NYcj+t9LGOdXWLLJWmcPvbOqHF6+S+9OMeVTc8vifFd9kQA/ZuzBjsse36IPGQEqEqbAmpujdc+JVDrMWk4pW8dLPMd/ijHVfvKNBd5e5UFd6TPnVxUmGqVe/JvLfoth7H1rNgF0q9ytKBdmTsMeRy9QBikobZ9jgIC/CYVaatwRjRzdoz5aoMYcDdiV7GP41kHaQe4NYHHogyK5vAh3tGY/2LPXPA1A12vXOIrFVflMSbTCmkoiTuNTYrKgoRBwOaCg3cG4DtT3ZefXzXRFA/QoLzDWZ55oK8/hkfS3C5R4P9DeA8D+tgt8oMOei27D86UeQ0xEbfPKG2eJMYMTi/4tsV2ZArMb8OuwAOOw4pQ6VQ5Y/NigZjqO5IQRT+DOy5mJRnb2KuTKT1xMG9ervG0LDinQI0fkKtQlh5FHRRdfUXlAm9a6myz7/cTiAfZq+vAVds5PTlROugaCf9P30FlpnClty9YPUtf2pswlVKw48X2xvhdg/XxhVi1B2yEyQdgurVQg1aHiuym1Z2xPEJXedO94="
+
+addons:
+  coverity_scan:
+    project:
+      name: "sharomank/notes-server"
+      description: "Simple server app with REST API for notes."
+    notification_email: roman.kurbangaliev@gmail.com
+    build_command_prepend: "./gradlew clean"
+    build_command:   "./gradlew build"
+    branch_pattern: coverity_scan
