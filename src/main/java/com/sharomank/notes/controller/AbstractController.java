@@ -6,7 +6,10 @@ import com.sharomank.notes.util.JavaBeanUtils;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -39,7 +42,6 @@ public abstract class AbstractController<E extends BaseModel> {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<E> create(E item) {
         item.setCreated(LocalDateTime.now());
         item = getRepository().insert(item);
@@ -49,21 +51,23 @@ public abstract class AbstractController<E extends BaseModel> {
     @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.PUT)
     public ResponseEntity<E> update(@PathVariable String id, @RequestBody E updateItem) {
         E current = getRepository().findOne(id);
-        if (current == null) {
+        if (current == null || current.isDeleted()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         JavaBeanUtils.copyNotNullProperties(updateItem, current);
+        current.setUpdated(LocalDateTime.now());
         return ResponseEntity.ok().body(getRepository().save(current));
     }
 
     @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> delete(@PathVariable String id) {
-        boolean exists = getRepository().exists(id);
-        if (!exists) {
+        E item = getRepository().findOne(id);
+        if (item == null) {
             return ResponseEntity.notFound().build();
         }
-        getRepository().delete(id);
+        item.setUpdated(LocalDateTime.now());
+        item.setDeleted(true);
+        getRepository().save(item);
         return ResponseEntity.ok().build();
     }
 }

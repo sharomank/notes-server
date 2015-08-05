@@ -125,6 +125,24 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     }
 
     @Test
+    public void canDeleteItemTwice() throws Exception {
+        mockMvcUtil.doDelete(getItemUriPath(), getTestItem().getId())
+                .andExpect(status().isOk());
+        mockMvcUtil.doDelete(getItemUriPath(), getTestItem().getId())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void impossibleUpdateDeletedItem() throws Exception {
+        T item = getTestItem();
+        mockMvcUtil.doDelete(getItemUriPath(), item.getId())
+                .andExpect(status().isOk());
+        item.setName(item.getName() + item.toString());
+        mockMvcUtil.doPut(getItemUriPath(), getTestItem().getId())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void deleteItemNotFound() throws Exception {
         mockMvcUtil.doDelete(getItemUriPath(), getRandomId())
                 .andExpect(status().isNotFound());

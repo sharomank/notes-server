@@ -12,4 +12,12 @@ public interface BaseModel {
     LocalDateTime getCreated();
 
     void setCreated(LocalDateTime created);
+
+    LocalDateTime getUpdated();
+
+    void setUpdated(LocalDateTime updated);
+
+    boolean isDeleted();
+
+    void setDeleted(boolean deleted);
 }
