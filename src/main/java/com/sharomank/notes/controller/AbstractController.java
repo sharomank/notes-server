@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public abstract class AbstractController<E extends BaseModel> {
     private final MongoRepository<E, String> repository;
@@ -54,7 +55,7 @@ public abstract class AbstractController<E extends BaseModel> {
         if (current == null || current.isDeleted()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        JavaBeanUtils.copyNotNullProperties(updateItem, current);
+        JavaBeanUtils.copyNotNullProperties(Optional.of(updateItem), Optional.of(current));
         current.setUpdated(LocalDateTime.now());
         return ResponseEntity.ok().body(getRepository().save(current));
     }

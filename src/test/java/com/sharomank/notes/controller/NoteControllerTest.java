@@ -2,7 +2,6 @@ package com.sharomank.notes.controller;
 
 import com.sharomank.notes.model.Note;
 import com.sharomank.notes.repository.NoteRepository;
-import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,11 +28,6 @@ public class NoteControllerTest extends AbstractControllerTest<Note> {
                 .map(noteRepository::insert)
                 .map(testItems::add)
                 .count();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        testItems.stream().forEach(noteRepository::delete);
     }
 
     @Override
