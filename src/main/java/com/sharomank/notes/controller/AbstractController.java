@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Optional;
+
+import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.ok;
 
 public abstract class AbstractController<E extends BaseModel> {
     private final MongoRepository<E, String> repository;
@@ -30,7 +32,7 @@ public abstract class AbstractController<E extends BaseModel> {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<E>> list() {
-        return ResponseEntity.ok(getRepository().findAll());
+        return ok(getRepository().findAll());
     }
 
     @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.GET)
@@ -39,14 +41,15 @@ public abstract class AbstractController<E extends BaseModel> {
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok().body(result);
+        return ok(result);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<E> create(E item) {
         item.setCreated(LocalDateTime.now());
         item = getRepository().insert(item);
-        return ResponseEntity.created(URI.create(getUriPath() + Constant.SLASH + item.getId())).body(item);
+        URI uri = URI.create(getUriPath() + Constant.SLASH + item.getId());
+        return ResponseEntity.created(uri).body(item);
     }
 
     @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.PUT)
@@ -55,21 +58,20 @@ public abstract class AbstractController<E extends BaseModel> {
         if (current == null || current.isDeleted()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        JavaBeanUtils.copyNotNullProperties(Optional.of(updateItem), Optional.of(current));
+        JavaBeanUtils.copyNotNullProperties(updateItem, current);
         current.setUpdated(LocalDateTime.now());
-        return ResponseEntity.ok().body(getRepository().save(current));
+        return ok(getRepository().save(current));
     }
 
     @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable String id) {
         E item = getRepository().findOne(id);
         if (item == null) {
-            return ResponseEntity.notFound().build();
+            return notFound().build();
         }
         item.setUpdated(LocalDateTime.now());
         item.setDeleted(true);
         getRepository().save(item);
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 }
-
