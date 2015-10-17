@@ -14,9 +14,11 @@ public final class JavaBeanUtils {
             final BeanWrapper trg = new BeanWrapperImpl(target);
             ReflectionUtils.doWithFields(source.getClass(), field -> {
                 String propName = field.getName();
-                Object srcPropValue = src.getPropertyValue(propName);
-                if (srcPropValue != null) {
-                    trg.setPropertyValue(propName, srcPropValue);
+                if (trg.isWritableProperty(propName)) {
+                    Object srcPropValue = src.getPropertyValue(propName);
+                    if (srcPropValue != null) {
+                        trg.setPropertyValue(propName, srcPropValue);
+                    }
                 }
             });
         }

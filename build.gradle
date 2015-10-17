@@ -5,12 +5,15 @@ buildscript {
     dependencies {
         classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.7.RELEASE'
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.8.0'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'mongo'
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 
 jar {
     baseName = 'notes-server'
@@ -40,6 +43,17 @@ task wrapper(type: Wrapper) {
 
 processResources {
     expand project.properties
+}
+
+jacoco {
+    toolVersion = '0.7.1.201405082137'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
 }
 
 test.dependsOn startManagedMongoDb
