@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.7.RELEASE'
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.8.0'
     }
 }
@@ -14,7 +14,7 @@ apply plugin: 'mongo'
 
 jar {
     baseName = 'notes-server'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 sourceCompatibility = 1.8
@@ -35,7 +35,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '2.7'
 }
 
 test.dependsOn startManagedMongoDb

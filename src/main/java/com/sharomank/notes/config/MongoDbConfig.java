@@ -33,7 +33,7 @@ public class MongoDbConfig extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-        //TODO need add UserCredentials for accessing to MongoDB
+        //Don't forget about use UserCredentials for accessing to MongoDB in real projects
         return new MongoClient(mongoDbHost, Integer.parseInt(mongoDbPort));
     }
 

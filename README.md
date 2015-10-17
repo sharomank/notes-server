@@ -6,8 +6,7 @@
        src="https://scan.coverity.com/projects/5985/badge.svg"/>
 </a>
 
-
-Simple server app with REST API for notes.
+Simple server-side app with REST API for notes.
 
 ## Prerequirements
 * Java 8
@@ -15,7 +14,7 @@ Simple server app with REST API for notes.
 
 ## Technologies
 * Spring Boot with Web, Actuator & Data Mongo
-* Gradle 2.4
+* Gradle Wrapper
 
 ## Get started
 * **Start Docker:** sudo service docker start
