@@ -38,4 +38,8 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.7'
 }
 
+processResources {
+    expand project.properties
+}
+
 test.dependsOn startManagedMongoDb
