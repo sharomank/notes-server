@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharomank.notes.NotesApplication;
 import com.sharomank.notes.model.BaseModel;
-import com.sharomank.notes.util.Constant;
 import com.sharomank.notes.util.MockMvcUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +35,7 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             StandardCharsets.UTF_8);
+    protected static final String PATH_VARIABLE_ID = "/{id}";
 
     protected MockMvc mockMvc;
     protected MockMvcUtil mockMvcUtil;
@@ -57,7 +57,7 @@ public abstract class AbstractControllerTest<T extends BaseModel> {
     protected abstract T getTestItemForInsert();
 
     private String getItemUriPath() {
-        return getUriPath() + Constant.PATH_VARIABLE_ID;
+        return getUriPath() + PATH_VARIABLE_ID;
     }
 
     @Test

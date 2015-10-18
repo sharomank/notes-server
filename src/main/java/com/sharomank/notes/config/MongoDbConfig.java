@@ -39,6 +39,9 @@ public class MongoDbConfig extends AbstractMongoConfiguration {
 
     @Override
     public CustomConversions customConversions() {
+        //Manually register JSR-310 converters to support JDK 8 date/time types,
+        //because used spring-data-mongodb version is lower than 1.7
+        //see https://jira.spring.io/browse/DATAMONGO-1102
         return new CustomConversions(Arrays.asList(
                 new LocalDateToStringConverter(),
                 new LocalDateTimeToStringConverter(),

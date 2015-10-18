@@ -4,7 +4,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.ReflectionUtils;
 
-public final class JavaBeanUtils {
+public class JavaBeanUtils {
     private JavaBeanUtils() {
     }
 

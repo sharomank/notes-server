@@ -1,7 +1,6 @@
 package com.sharomank.notes.controller;
 
 import com.sharomank.notes.model.BaseModel;
-import com.sharomank.notes.util.Constant;
 import com.sharomank.notes.util.JavaBeanUtils;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,9 @@ import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 public abstract class AbstractController<E extends BaseModel> {
+    protected static final String SLASH = "/";
+    protected static final String PATH_VARIABLE_ID = "/{id}";
+
     private final MongoRepository<E, String> repository;
 
     public AbstractController(MongoRepository<E, String> repository) {
@@ -35,7 +37,7 @@ public abstract class AbstractController<E extends BaseModel> {
         return ok(getRepository().findAll());
     }
 
-    @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.GET)
+    @RequestMapping(value = PATH_VARIABLE_ID, method = RequestMethod.GET)
     public ResponseEntity<E> get(@PathVariable String id) {
         E result = getRepository().findOne(id);
         if (result == null) {
@@ -48,11 +50,11 @@ public abstract class AbstractController<E extends BaseModel> {
     public ResponseEntity<E> create(E item) {
         item.setCreated(LocalDateTime.now());
         item = getRepository().insert(item);
-        URI uri = URI.create(getUriPath() + Constant.SLASH + item.getId());
+        URI uri = URI.create(getUriPath() + SLASH + item.getId());
         return ResponseEntity.created(uri).body(item);
     }
 
-    @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.PUT)
+    @RequestMapping(value = PATH_VARIABLE_ID, method = RequestMethod.PUT)
     public ResponseEntity<E> update(@PathVariable String id, @RequestBody E updateItem) {
         E current = getRepository().findOne(id);
         if (current == null || current.isDeleted()) {
@@ -63,7 +65,7 @@ public abstract class AbstractController<E extends BaseModel> {
         return ok(getRepository().save(current));
     }
 
-    @RequestMapping(value = Constant.PATH_VARIABLE_ID, method = RequestMethod.DELETE)
+    @RequestMapping(value = PATH_VARIABLE_ID, method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable String id) {
         E item = getRepository().findOne(id);
         if (item == null) {
