@@ -1,4 +1,4 @@
-package com.sharomank.notes.model;
+package com.sharomank.notes.model.base;
 
 import org.springframework.data.annotation.Id;
 

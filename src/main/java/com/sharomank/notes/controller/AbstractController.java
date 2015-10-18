@@ -1,6 +1,6 @@
 package com.sharomank.notes.controller;
 
-import com.sharomank.notes.model.BaseModel;
+import com.sharomank.notes.model.base.BaseModel;
 import com.sharomank.notes.util.JavaBeanUtils;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;

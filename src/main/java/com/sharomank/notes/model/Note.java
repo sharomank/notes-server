@@ -1,20 +1,12 @@
 package com.sharomank.notes.model;
 
+import com.sharomank.notes.model.base.NamedModel;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Note extends AbstractModel {
-    private String name;
+public class Note extends NamedModel {
     private String description;
     private boolean completed;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;
