@@ -1,10 +1,7 @@
 # Notes Server
 [![Build Status](https://travis-ci.org/sharomank/notes-server.svg)](https://travis-ci.org/sharomank/notes-server)
 [![Coverage Status](https://coveralls.io/repos/sharomank/notes-server/badge.svg?branch=master&service=github)](https://coveralls.io/github/sharomank/notes-server?branch=master)
-<a href="https://scan.coverity.com/projects/5985">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/5985/badge.svg"/>
-</a>
+[![Coverity Status](https://scan.coverity.com/projects/5985/badge.svg)](https://scan.coverity.com/projects/5985)
 
 Simple server-side app with REST API for notes.
 
@@ -18,6 +15,6 @@ Simple server-side app with REST API for notes.
 
 ## Get started
 * **Start Docker:** sudo service docker start
-* **Run MongoDB:** docker run -d --name mongodb -p 27017:27017 mongo
+* **Run MongoDB:** docker run --rm --name mongodb -p 27017:27017 mongo
 * **Run application:** ./gradlew bootRun
-* **Open:** http://localhost:8080/notes
+* **Open:** http://localhost:9001/health
